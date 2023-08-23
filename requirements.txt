@@ -1,0 +1,16 @@
+aiohttp==3.8.4
+beautifulsoup4==4.12.2
+discord.py==2.3.1
+fastapi==0.101.1
+langchain==0.0.271
+matplotlib==3.7.2
+numpy==1.23.5
+openai==0.27.8
+pandas==1.5.3
+pydantic==1.10.11
+pymongo==4.4.1
+PyPDF2==3.0.1
+python-dotenv==1.0.0
+Requests==2.31.0
+streamlit==1.25.0
+streamlit_js_eval==0.1.5
