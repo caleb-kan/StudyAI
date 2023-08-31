@@ -209,38 +209,55 @@ The bot offers a set of commands tailored to enhance user experience, with four 
 	- **Usage**: `!upload [attach a .pdf file]`
 	- **Description**: When utilizing the `!upload` function, ensure you accompany it with an attached `.pdf` file. Upon executing this command with the appropriate attachment, the bot will commence the upload process. Post upload, it will meticulously extract all the textual content from the `.pdf` file. This extracted data is then systematically stored in a vector database for future retrievals and references. It's imperative to ensure the attached file is in `.pdf` format for the optimal functioning of this feature.
 	- **Technical**:
+	    - `extract all text data from .pdf files`
+	      ```python
+			def extract_file_content(file_path):
+			    
+			    loader = UnstructuredFileLoader(file_path)
+			        
+			    documents = loader.load()
+			    documents_content = '\n'.join(doc.page_content for doc in documents)
+			    
+			    return documents_content
+	      ```
+		- `create a text splitter to convert text data into chunks`
+		  ```python
+			text_splitter = CharacterTextSplitter(        
+			    separator = "\n\n",
+			    chunk_size = 1000,
+			    chunk_overlap  = 200,
+			    length_function = len,
+			)
+		  ```
 		- `storing text data into a vector database`
 			```python 
-			def  vector_store(file_name, attachment):
-				raw_documents  =  PyPDFLoader(attachment).load()
-				text_splitter  =  CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
-				docs  =  text_splitter.split_documents(raw_documents)
-				return  docs
+			def get_doc_search(text_splitter):
+			    return FAISS.from_texts(text_splitter, embeddings)
 			```
 		- `!upload command`
 			```python
 			@client.command(name='upload')
-			async  def  upload(ctx):
-				global  db
-				if  not  ctx.message.attachments:
-					await  ctx.send("Please attach a .pdf file with the `!upload` command.")	
-				return
-				
-				attachment  =  ctx.message.attachments[0]
-				attachment_url  =  attachment.url
-				file_name  =  attachment.filename
-				print(file_name)
+			async def upload(ctx):
+			    global db
+			    if not ctx.message.attachments:
+			        await ctx.send("Please attach a pdf or image file with the `!upload` command.")
+			        return
 
-				if  file_name.endswith('.pdf'):
-					try:
-						docs  =  vector_store(file_name, attachment_url)
-						db  =  Chroma.from_documents(documents  =  docs, embedding  =  embeddings, persist_directory=  persist_directory)
-						await  ctx.send("Text extracted and stored!")
-					except  Exception  as  e:
-						print(e)
-						await  ctx.send("Failed to extract text!")
-				else:
-					await  ctx.send("Please upload a .pdf file!")
+			    file_name = ctx.message.attachments[0].filename
+			    
+			    if file_name.endswith(".pdf"):
+			        await ctx.message.attachments[0].save(fp=format(file_name))
+			    else:
+			        await ctx.send("Please attach a pdf or image file with the `!upload` command.")
+			        return
+			        
+			    try:
+			        text_chunks = text_splitter.split_text(extract_file_content(file_name))
+			        db = get_doc_search(text_chunks)
+			        await ctx.send("Text extracted and stored!")
+			    except Exception as e:
+			        print(e)
+			        await ctx.send("Failed to extract text!")
 			```
 3. **!chat**:
 	- **Usage**: `!chat [ask a question]`
@@ -249,18 +266,24 @@ The bot offers a set of commands tailored to enhance user experience, with four 
 		- `!chat command`
 		  ```python
 		  @client.command(name='chat')
-			async  def  chat(ctx, *, query: str):
-				global  db
-				try:
-					retriever  =  db.as_retriever(search_type="mmr", search_kwargs={"k":1})
-					qa  =  RetrievalQA.from_chain_type(llm=llm, chain_type="map_reduce", retriever=retriever, return_source_documents=True, verbose  =  True)
-					answer  =  qa({"query": query})
-					strings  =  split_string(answer['result'], 2000)
-					for  i  in  range(0, len(strings)):
-						await  ctx.send(str(strings[i]))
-				except  Exception  as  e:
-					print(e)
-					await  ctx.send("Use the !upload function to upload a .pdf or .txt file before chatting!")
+		  async def chat(ctx, *, query: str):
+			    global db
+			    
+			    chain = load_qa_chain(OpenAI(), chain_type = "map_rerank", return_intermediate_steps=True)
+			    documents = db.similarity_search(query)
+			    
+			    try:
+			        results = chain({
+			                        "input_documents":documents, 
+			                        "question": query
+			                    }, 
+			                    return_only_outputs=True)
+			        results = results['intermediate_steps'][0]
+			        await ctx.send(str(results['answer']))
+			        await ctx.send("My confidence score to your answer is: " + str(results["score"]))
+			    except Exception as e:
+			        print(e)
+			        await ctx.send("Use the !upload function to upload a .pdf or .txt file before chatting!")
 		  ```
 4. **!story**:
 	- **Usage**: `!story [a short story title]`
