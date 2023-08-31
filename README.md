@@ -19,7 +19,7 @@ Connecting our Discord bot to your server is a straightforward process. Simply c
 	```python
 	guidance.llm  =  guidance.llms.OpenAI("text-davinci-003")
 	llm  =  ChatOpenAI(temperature=0, model="gpt-3.5-turbo-16k")
-	embeddings  =  SentenceTransformerEmbeddings(model_name  =  "all-MiniLM-L6-v2")
+	embeddings  =  OpenAIEmbeddings()
 	```
 
 ### User Commands 
