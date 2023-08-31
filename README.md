@@ -14,7 +14,7 @@ This Discord bot has been designed with both users and administrators in mind, o
 Connecting our Discord bot to your server is a straightforward process. Simply click on [this link](https://discord.com/api/oauth2/authorize?client_id=1138347327866818662&permissions=534723950656&scope=bot) to initiate the installation. This will redirect you to Discord's official OAuth2 authorization page. Here, you'll be prompted to choose a server where you'd like to add the bot. Ensure that you have the necessary permissions on the server to invite bots. Once you've selected the desired server, follow the on-screen instructions to complete the bot's installation. After a successful installation, the bot will be active and ready to serve on your server!
 
 ### Technical Initialization
-- Libaries to install:`aiohttp`, `beautifulsoup4`, `discord.py`, `fastapi`, `langchain`, `matplotlib`, `numpy`, `openai`, `pandas`, `pydantic`, `pymongo`, `PyPDF2`, `python-dotenv`, `Requests`, `streamlit`, `streamlit_js_eval`, `pypdf`, `redis`, `guidance`, `sentence_transformers`, `unstructured`, `chromadb`, `redis_om` 
+- Libaries to install:`aiohttp`, `beautifulsoup4`, `discord.py`, `fastapi`, `langchain`, `matplotlib`, `numpy`, `openai`, `pandas`, `pydantic`, `pymongo`, `PyPDF2`, `python-dotenv`, `Requests`, `streamlit`, `streamlit_js_eval`, `pypdf`, `redis`, `guidance`, `sentence_transformers`, `unstructured`, `chromadb`, `redis_om`, `faiss-cpu`, `tiktoken`, `pytesseract`, `"unstructured[pdf]"`, `nltk`
 - Defining Large Language Models
 	```python
 	guidance.llm  =  guidance.llms.OpenAI("text-davinci-003")
