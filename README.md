@@ -269,10 +269,9 @@ The bot offers a set of commands tailored to enhance user experience, with four 
 		  async def chat(ctx, *, query: str):
 			    global db
 			    
-			    chain = load_qa_chain(OpenAI(), chain_type = "map_rerank", return_intermediate_steps=True)
-			    documents = db.similarity_search(query)
-			    
 			    try:
+    				chain = load_qa_chain(OpenAI(), chain_type = "map_rerank", return_intermediate_steps=True)
+			    	documents = db.similarity_search(query)
 			        results = chain({
 			                        "input_documents":documents, 
 			                        "question": query
