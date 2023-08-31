@@ -270,8 +270,8 @@ The bot offers a set of commands tailored to enhance user experience, with four 
 			    global db
 			    
 			    try:
-							    chain = load_qa_chain(OpenAI(), chain_type = "map_rerank", return_intermediate_steps=True)
-			    	   documents = db.similarity_search(query)
+					  chain = load_qa_chain(OpenAI(), chain_type = "map_rerank", return_intermediate_steps=True)
+			    	  documents = db.similarity_search(query)
 			        results = chain({
 			                        "input_documents":documents, 
 			                        "question": query
