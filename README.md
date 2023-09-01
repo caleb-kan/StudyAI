@@ -262,7 +262,12 @@ The bot offers a set of commands tailored to enhance user experience, with four 
 			    try:
 			        qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=0), retriever =  db.as_retriever(), memory=qa_memory)
 			        results = qa({"question": query, "chat_history": chat_history})
-			        await ctx.send(str(results['answer']))
+			        
+			        strings = split_string(results['answer'], 2000)
+			        
+			        for i in range(0, len(strings)):
+			            await ctx.send(str(strings[i]))
+			        
 			    except Exception as e:
 			        print(e)
 			        await ctx.send("`Use the !upload function to upload a .pdf or .txt file before chatting!`")
