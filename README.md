@@ -225,7 +225,7 @@ The bot offers a set of commands tailored to enhance user experience, with four 
 			async def upload(ctx):
 			    global db
 			    if not ctx.message.attachments:
-			        await ctx.send("`Please attach a pdf or image file with the `!upload` command.`")
+			        await ctx.send("`Please attach a .pdf file with the !upload command.`")
 			        return
 
 			    file_name = ctx.message.attachments[0].filename
@@ -233,7 +233,7 @@ The bot offers a set of commands tailored to enhance user experience, with four 
 			    if file_name.endswith(".pdf"):
 			        await ctx.message.attachments[0].save(fp=format(file_name))
 			    else:
-			        await ctx.send("`Please attach a pdf or image file with the `!upload` command.`")
+			        await ctx.send("`Please attach a .pdf file with the !upload command.`")
 			        return
 			        
 			    try:
@@ -254,8 +254,8 @@ The bot offers a set of commands tailored to enhance user experience, with four 
 			chat_history  =  []
 			```
 		- `!chat command`
-		  ```python
-		  @client.command(name='chat')
+		   ```python
+		   @client.command(name='chat')
 			async def chat(ctx, *, query: str):
 			    global db
 
@@ -271,7 +271,7 @@ The bot offers a set of commands tailored to enhance user experience, with four 
 			    except Exception as e:
 			        print(e)
 			        await ctx.send("`Use the !upload function to upload a .pdf or .txt file before chatting!`")
-		  ```
+		   ```
 4. **!story**:
 	- **Usage**: `!story [a short story title]`
 	- **Description**: Engage your imagination with the `!story` command. By providing a short story title, you empower the bot to harness the capabilities of a sophisticated Large Language Model (LLM) to craft a unique short story inspired by that title. Each generated narrative is concise, ensuring it remains under 500 words, making it a perfect bite-sized read. But that's not all! Along with the text, the bot also conjures up a captivating image that resonates with the contents of the story, adding a visual dimension to your storytelling experience. Dive into a world where titles come to life, both in words and imagery.
