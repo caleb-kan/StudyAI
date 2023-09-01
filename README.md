@@ -263,26 +263,24 @@ The bot offers a set of commands tailored to enhance user experience, with four 
 	- **Usage**: `!chat [ask a question]`
 	- **Description**: Following the successful use of the `!upload` command, users unlock the capability to interact dynamically with their `.pdf` documents. By invoking the `!chat` command, you can initiate a conversation with a state-of-the-art Large Language Model (LLM). This allows for an engaging question-and-answer session with the content of your document. Simply pose your questions, and the LLM will delve into the extracted data from your document to provide informative answers. It's like having a dialogue with your document, powered by cutting-edge AI.
 	- **Technical**: 
+		- `initiating memory & chat history for past referencing`
+			```python
+			qa_memory  =  ConversationSummaryBufferMemory(memory_key="chat_history", return_messages=True, llm=llm, max_token_limit=1000)
+			chat_history  =  []
+			```
 		- `!chat command`
 		  ```python
 		  @client.command(name='chat')
-		  async def chat(ctx, *, query: str):
+			async def chat(ctx, *, query: str):
 			    global db
-			    
+
 			    try:
-					  chain = load_qa_chain(OpenAI(), chain_type = "map_rerank", return_intermediate_steps=True)
-			    	  documents = db.similarity_search(query)
-			        results = chain({
-			                        "input_documents":documents, 
-			                        "question": query
-			                    }, 
-			                    return_only_outputs=True)
-			        results = results['intermediate_steps'][0]
+			        qa = ConversationalRetrievalChain.from_llm(OpenAI(temperature=0), retriever =  db.as_retriever(), memory=qa_memory)
+			        results = qa({"question": query, "chat_history": chat_history})
 			        await ctx.send(str(results['answer']))
-			        await ctx.send("My confidence score to your answer is: " + str(results["score"]))
 			    except Exception as e:
 			        print(e)
-			        await ctx.send("Use the !upload function to upload a .pdf or .txt file before chatting!")
+			        await ctx.send("`Use the !upload function to upload a .pdf or .txt file before chatting!`")
 		  ```
 4. **!story**:
 	- **Usage**: `!story [a short story title]`
