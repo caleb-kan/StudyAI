@@ -21,3 +21,8 @@ sentence_transformers
 unstructured
 chromadb
 redis_om
+faiss-cpu
+tiktoken
+pytesseract
+"unstructured[pdf]"
+nltk
