@@ -43,7 +43,6 @@ The bot offers a set of commands tailored to enhance user experience, with four 
 				}
 
 				 response  =  requests.request("POST", url, headers=headers, data=payload)
-				 
 				print(response.text)
 				
 				return  response.text 
@@ -65,33 +64,19 @@ The bot offers a set of commands tailored to enhance user experience, with four 
 				}
 
 				data_json  =  json.dumps(data)
-
 				post_url  =  f"https://chrome.browserless.io/content?token={browserless_api_key}"
-
 				response  =  requests.post(post_url, headers=headers, data=data_json)
 
 				if  response.status_code  ==  200:
-
 					soup  =  BeautifulSoup(response.content, "html.parser")
-
 					text  =  soup.get_text()
-
 					print("THIS CONTENT:", text)
-
-				  
-
 					if  len(text) >  10000:
-
 						output  =  summary(objective, text)
-
 						return  output
-
 					else:
-
 						return  text
-
 				else:
-
 					print(f"HTTP request failed with status code {response.status_code}")
 			
 			```
@@ -201,7 +186,7 @@ The bot offers a set of commands tailored to enhance user experience, with four 
 						await  ctx.send(str(strings[i]))
 				except  Exception  as  e:
 					print(e)
-					await  ctx.send("The !research function is limited to queries under 16,384 tokens, please make your research objective shorter and concise.")
+					await  ctx.send("`The !research function is limited to queries under 16,384 tokens, please make your research objective shorter and concise.`")
 			``` 
     - **Remember*** to use the command responsibly and always review the summarized content to ensure its relevance and accuracy.
  
@@ -240,7 +225,7 @@ The bot offers a set of commands tailored to enhance user experience, with four 
 			async def upload(ctx):
 			    global db
 			    if not ctx.message.attachments:
-			        await ctx.send("Please attach a pdf or image file with the `!upload` command.")
+			        await ctx.send("`Please attach a pdf or image file with the `!upload` command.`")
 			        return
 
 			    file_name = ctx.message.attachments[0].filename
@@ -248,16 +233,16 @@ The bot offers a set of commands tailored to enhance user experience, with four 
 			    if file_name.endswith(".pdf"):
 			        await ctx.message.attachments[0].save(fp=format(file_name))
 			    else:
-			        await ctx.send("Please attach a pdf or image file with the `!upload` command.")
+			        await ctx.send("`Please attach a pdf or image file with the `!upload` command.`")
 			        return
 			        
 			    try:
 			        text_chunks = text_splitter.split_text(extract_file_content(file_name))
 			        db = get_doc_search(text_chunks)
-			        await ctx.send("Text extracted and stored!")
+			        await ctx.send("`Text extracted and stored!`")
 			    except Exception as e:
 			        print(e)
-			        await ctx.send("Failed to extract text!")
+			        await ctx.send("`Failed to extract text!`")
 			```
 3. **!chat**:
 	- **Usage**: `!chat [ask a question]`
@@ -333,13 +318,13 @@ The bot offers a set of commands tailored to enhance user experience, with four 
 					async  with  aiohttp.ClientSession() as  session:
 						async  with  session.get(image_url) as  resp:
 						if  resp.status  !=  200:
-							return  await  ctx.send('Could not download image...')
+							return  await  ctx.send('`Could not download image...`')
 						data  =  await  resp.read()
 						image_stream  =  io.BytesIO(data)
 						await  ctx.send(file=discord.File(fp=image_stream, filename="image.png"))
 				except  Exception  as  e:
 					print(e)
-					await  ctx.send("Unable to generate a short story!")
+					await  ctx.send("`Unable to generate a short story!`")
 			```
 
 ## Feedback and Contributions
