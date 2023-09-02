@@ -194,6 +194,7 @@ The bot offers a set of commands tailored to enhance user experience, with four 
 	- **Usage**: `!upload [attach a .pdf file]`
 	- **Description**: When utilizing the `!upload` function, ensure you accompany it with an attached `.pdf` file. Upon executing this command with the appropriate attachment, the bot will commence the upload process. Post upload, it will meticulously extract all the textual content from the `.pdf` file. This extracted data is then systematically stored in a vector database for future retrievals and references. It's imperative to ensure the attached file is in `.pdf` format for the optimal functioning of this feature.
 	- **Technical**:
+								![alt text](https://python.langchain.com/assets/images/qa_flow-9fbd91de9282eb806bda1c6db501ecec.jpeg)
 	    - `extract all text data from .pdf files`
 	      ```python
 			def extract_file_content(file_path):
