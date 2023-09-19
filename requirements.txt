@@ -24,4 +24,3 @@ redis_om
 faiss-cpu
 tiktoken
 pytesseract
-nltk
