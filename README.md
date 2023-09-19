@@ -17,7 +17,7 @@ Connecting our Discord bot to your server is a straightforward process. Simply c
 - Libaries to install:`aiohttp`, `beautifulsoup4`, `discord.py`, `fastapi`, `langchain`, `matplotlib`, `numpy`, `openai`, `pandas`, `pydantic`, `pymongo`, `PyPDF2`, `python-dotenv`, `Requests`, `streamlit`, `streamlit_js_eval`, `pypdf`, `redis`, `guidance`, `sentence_transformers`, `unstructured`, `chromadb`, `redis_om`, `faiss-cpu`, `tiktoken`, `pytesseract`, `"unstructured[pdf]"`, `nltk`
 - Defining Large Language Models
 	```python
-	guidance.llm  =  guidance.llms.OpenAI("gpt-3.5-turbo-instruct")
+	guidance.llm  =  guidance.llms.OpenAI(temperature = 0, model = "gpt-3.5-turbo-instruct")
 	llm  =  ChatOpenAI(temperature=0, model="gpt-3.5-turbo-16k")
 	embeddings  =  OpenAIEmbeddings()
 	```
