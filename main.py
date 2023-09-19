@@ -63,8 +63,6 @@ from PyPDF2 import PdfReader
 
 from fastapi import FastAPI
 
-import chromadb
-
 import guidance
 
 from filetype import guess
