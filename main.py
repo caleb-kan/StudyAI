@@ -79,7 +79,7 @@ serper_api_key = os.getenv("SERP_API_KEY")
 discord_api_key = os.getenv("DISCORD_TOKEN")
 
 #defining llm
-guidance.llm = guidance.llms.OpenAI("gpt-3.5-turbo-instruct") 
+guidance.llm = guidance.llms.OpenAI(temperature = 0, model = "gpt-3.5-turbo-instruct") 
 llm = ChatOpenAI(temperature=0, model="gpt-3.5-turbo-16k")
 embeddings = OpenAIEmbeddings()
 #nltk.download('all')
